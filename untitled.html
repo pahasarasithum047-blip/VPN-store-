@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VPN STORE - FAST • SECURE • PRIVATE • UNLIMITED</title>
+<link rel="icon" href="logo.png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,Arial,sans-serif}
+:root{--bg:#050505;--card:#101510;--neon:#39FF14;--lime:#7CFC00;--white:#fff;--mut:#BDBDBD}
+body{background:var(--bg);color:var(--white);line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;border:0;font-weight:800}
+.container{max-width:1150px;margin:auto;padding:0 16px}
+.topbar{background:#000;border-bottom:1px solid #1f2a1f;text-align:center;padding:8px 12px;font-size:13px;color:var(--neon)}
+header{position:sticky;top:0;z-index:100;background:rgba(5,5,5,.92);backdrop-filter:blur(10px);border-bottom:1px solid #222}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:1px}
+.brand img{width:48px;height:48px;object-fit:contain;border-radius:10px;background:#000;border:1px solid #2a2a2a}
+.brand span{color:var(--neon)} .brand small{display:block;font-size:10px;letter-spacing:3px;color:var(--mut);font-weight:400}
+nav.links{display:flex;gap:22px;font-size:14px;font-weight:600}
+nav.links a:hover{color:var(--neon)}
+.btn{background:var(--neon);color:#000;padding:12px 20px;border-radius:999px;box-shadow:0 0 22px rgba(57,255,20,.45);transition:.2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 32px rgba(57,255,20,.7)}
+.btn-ghost{background:transparent;color:#fff;border:1px solid var(--neon);box-shadow:none}
+.btn-sm{padding:8px 14px;font-size:13px}
+.hamburger{display:none;font-size:26px;background:none;color:#fff}
+.view{display:none;animation:fade .3s ease} .view.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.hero{padding:56px 0 32px;background:radial-gradient(600px 300px at 70% 10%,rgba(57,255,20,.18),transparent),linear-gradient(180deg,#071007,#050505)}
+.hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center}
+.badge{display:inline-block;border:1px solid var(--neon);color:var(--neon);padding:6px 12px;border-radius:999px;font-size:12px;letter-spacing:1px}
+.hero h1{font-size:52px;line-height:.95;margin:16px 0} .hero h1 em{color:var(--neon);font-style:normal;text-shadow:0 0 22px rgba(57,255,20,.6)}
+.hero p{color:var(--mut);max-width:520px;margin-bottom:20px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+.stats{display:flex;gap:14px;margin-top:22px;flex-wrap:wrap}.stat{background:var(--card);border:1px solid #222;padding:12px 16px;border-radius:14px}.stat b{font-size:20px;color:var(--neon)}
+.shield{background:linear-gradient(160deg,#101510,#071a07);border:1px solid #2a3a2a;border-radius:22px;padding:22px;text-align:center;box-shadow:0 0 40px rgba(57,255,20,.12)}
+.shield .big{font-size:64px} .shield h3{margin:6px 0} .shield p{color:var(--mut);font-size:14px}
+.section{padding:36px 0} .section h2{font-size:30px;margin-bottom:6px} .section h2 i{color:var(--neon);font-style:normal} .sub{color:var(--mut);margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:var(--card);border:1px solid #232d23;border-radius:18px;padding:20px;backdrop-filter:blur(8px)} .card:hover{border-color:var(--neon)}
+.price{font-size:34px;font-weight:900;color:var(--neon)} .price small{font-size:14px;color:var(--mut)}
+.pill{display:inline-block;background:#1a2a1a;color:var(--neon);padding:4px 10px;border-radius:999px;font-size:12px}
+.list{list-style:none;margin:14px 0;color:#ddd;font-size:14px}.list li{padding:5px 0}.list li:before{content:"✓ ";color:var(--neon);font-weight:900}
+.tabs{display:flex;gap:10px;margin:16px 0;flex-wrap:wrap}.tab{padding:10px 18px;border-radius:999px;background:#151515;border:1px solid #333;color:#fff}.tab.active{background:var(--neon);color:#000}
+input,select,textarea{width:100%;padding:13px;border-radius:12px;background:#0b0f0b;border:1px solid #2a2a2a;color:#fff;margin:8px 0;outline:none}
+input:focus{border-color:var(--neon)}
+label{font-size:13px;color:var(--mut)} .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-card{max-width:520px;margin:auto}
+.notice{background:#0f1f0a;border:1px dashed var(--neon);padding:14px;border-radius:14px;font-size:14px}
+.table-wrap{overflow:auto;background:var(--card);border-radius:14px;border:1px solid #222}
+table{width:100%;border-collapse:collapse;min-width:640px} th,td{padding:12px;text-align:left;border-bottom:1px solid #222;font-size:14px}
+.status{padding:4px 10px;border-radius:999px;font-size:12px;font-weight:800}.Pending{background:#3a2d00;color:#ffdd57}.Approved{background:#0a2e12;color:#39FF14}.Rejected{background:#3a0a0a;color:#ff6b6b}.Expired{background:#222;color:#aaa}
+.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.kpi .card{text-align:center}.kpi b{font-size:28px;color:var(--neon);display:block}
+.flex{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.mt{margin-top:14px}.center{text-align:center}
+.wa{position:fixed;right:16px;bottom:16px;z-index:200;background:#25D366;color:#fff;padding:14px 16px;border-radius:999px;font-weight:900;box-shadow:0 8px 30px rgba(0,0,0,.5)}
+footer{border-top:1px solid #222;padding:28px 0;color:var(--mut);font-size:13px;text-align:center;margin-top:20px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;padding:16px;z-index:300}.modal.open{display:flex}
+.modal-box{background:#101510;border:1px solid #333;border-radius:18px;padding:22px;max-width:520px;width:100%;max-height:90vh;overflow:auto}
+.countdown{font-size:28px;color:var(--neon);font-weight:900}
+@media(max-width:820px){nav.links{display:none;position:absolute;top:68px;left:0;right:0;background:#050505;flex-direction:column;padding:16px;border-bottom:1px solid #222}nav.links.open{display:flex}.hamburger{display:block}.hero-grid,.grid,.kpi,.row{grid-template-columns:1fr}.hero h1{font-size:38px}}
+</style>
+</head>
+<body>
+<div class="topbar" id="announcement">🔥 LIMITED OFFER - Unlimited Mobile Only Rs.300 | Free 1GB Trial Available - 24 Hours</div>
+<header><div class="container nav">
+<a class="brand" href="#" onclick="show('home')"><img src="logo.png" alt="VPN STORE Logo" onerror="this.style.display='none'"><span>VPN <span style="color:#fff">STORE</span><small>FAST • SECURE • PRIVATE</small></span></a>
+<nav class="links" id="mainNav"><a href="#" onclick="show('home')">Home</a><a href="#" onclick="show('packages')">VPN Packages</a><a href="#" onclick="show('free')">Free VPN</a><a href="#" onclick="show('account')">My Account</a><a href="#" onclick="show('contact')">Contact Us</a><button class="btn btn-sm" onclick="show('login')">Login / Register</button></nav>
+<button class="hamburger" onclick="document.getElementById('mainNav').classList.toggle('open')">☰</button>
+</div></header>
+
+<main class="container">
+<!-- HOME -->
+<section id="view-home" class="view active">
+<div class="hero"><div class="hero-grid"><div><span class="badge">● 100% PRIVATE & NO LOGS</span><h1>VPN STORE<br><em>FAST • SECURE<br>PRIVATE • UNLIMITED</em></h1><p>Experience reliable VPN services at affordable prices. Mobile & Router packages, instant setup, 24/7 WhatsApp support in Sri Lanka.</p><div class="hero-cta"><button class="btn" onclick="show('free')">GET FREE VPN</button><button class="btn btn-ghost" onclick="show('packages')">VIEW PACKAGES →</button></div><div class="stats"><div class="stat"><b>10Gbps</b><br><small>Speed Servers</small></div><div class="stat"><b>24/7</b><br><small>Support</small></div><div class="stat"><b>1GB FREE</b><br><small>24H Trial</small></div></div></div>
+<div class="shield"><div class="big">🛡️</div><h3>Your Connection is Encrypted</h3><p>AES-256 Encryption • Kill Switch • No Logs • Unlimited Devices (Router)</p><div class="mt"><img src="logo.png" alt="VPN STORE" style="width:120px;height:auto;object-fit:contain" onerror="this.remove()"></div><div class="mt flex center" style="justify-content:center"><button class="btn btn-sm" onclick="openWA('support')">WhatsApp Support</button><button class="btn btn-sm btn-ghost" onclick="openWA('channel')">WhatsApp Channel</button></div></div></div></div>
+<div class="section"><h2>Featured <i>Packages</i></h2><p class="sub">Best sellers - Buy in 2 minutes with bank transfer.</p><div class="grid" id="featuredPackages"></div></div>
+<div class="section"><h2>Why Choose <i>Us?</i></h2><div class="grid"><div class="card"><h3>⚡ Super Fast</h3><p class="sub">Optimized servers for YouTube, Gaming, Zoom & Social Media.</p></div><div class="card"><h3>🔒 100% Private</h3><p class="sub">Your IP hidden. No logs. No tracking.</p></div><div class="card"><h3>💰 Cheapest in LK</h3><p class="sub">Starting Rs.200. No hidden charges.</p></div></div></div>
+<div class="section"><h2>How It <i>Works</i></h2><div class="grid"><div class="card"><b>1. Choose Package</b><p class="sub">Pick Mobile or Router package.</p></div><div class="card"><b>2. Pay & Upload Receipt</b><p class="sub">Bank transfer, upload slip. Get Order ID.</p></div><div class="card"><b>3. Admin Approves</b><p class="sub">Download VPN config. Connect & Enjoy!</p></div></div></div>
+<div class="section"><div class="card center"><h2>Need Help?</h2><p class="sub">Chat with us on WhatsApp - Fast reply.</p><div class="flex" style="justify-content:center"><button class="btn" onclick="openWA('support')">WhatsApp Support</button><button class="btn btn-ghost" onclick="openWA('community')">WhatsApp Community</button><button class="btn btn-ghost" onclick="openWA('channel')">WhatsApp Channel</button></div></div></div>
+</section>
+
+<!-- PACKAGES -->
+<section id="view-packages" class="view"><div class="section"><h2>VPN <i>Packages</i></h2><p class="sub">All packages - Validity 30 Days. Admin can edit prices from Admin Dashboard.</p>
+<div class="tabs"><button class="tab active" id="tabMobile" onclick="setCat('MOBILE')">📱 Mobile Packages</button><button class="tab" id="tabRouter" onclick="setCat('ROUTER')">📡 Router Packages</button></div>
+<div class="grid" id="packageList"></div></div></section>
+
+<!-- FREE VPN -->
+<section id="view-free" class="view"><div class="section"><h2>🎁 Free <i>VPN - 1GB / 24 Hours</i></h2><p class="sub">One free trial per verified customer. Real 1GB enforcement is done on VPN server / provider API - config file alone cannot enforce data limit.</p>
+<div class="card"><div class="row"><div><h3>1GB FREE TEST FILE</h3><p>Validity: <b>24 HOURS</b> from activation</p><p class="sub">Register → Verify → Activate Trial → Download Config</p><div id="trialBox"><p id="trialStatus">Please login to claim trial.</p><div id="trialTimer" class="countdown"></div></div></div><div><button class="btn" style="width:100%" onclick="claimTrial()">GET FREE VPN</button><button class="btn btn-ghost mt" style="width:100%" onclick="downloadFree()">⬇ Download Free Config (.ovpn)</button><p class="sub mt">After 24 hours, download authorization expires automatically.</p></div></div></div></div></section>
+
+<!-- LOGIN / REGISTER -->
+<section id="view-login" class="view"><div class="section"><div class="form-card card"><h2>Login / <i>Register</i></h2>
+<label>Full Name</label><input id="regName" placeholder="Full Name">
+<label>WhatsApp Number</label><input id="regWA" placeholder="07XXXXXXXX">
+<label>Email Address</label><input id="regEmail" placeholder="you@email.com">
+<label>Password</label><input id="regPass" type="password" placeholder="Password">
+<button class="btn" style="width:100%" onclick="register()">Create Account & Login</button><button class="btn btn-ghost mt" style="width:100%" onclick="login()">Login with Email</button>
+<p class="sub mt">Admin Login: Use your admin email. Admin dashboard opens automatically if role = admin (set in Supabase).</p>
+<p class="sub">Demo Mode: If Supabase not connected, account is saved in this browser only.</p></div></div></section>
+
+<!-- CHECKOUT -->
+<section id="view-checkout" class="view"><div class="section"><div class="form-card card"><h2>Checkout</h2><div id="checkoutInfo" class="notice">Select a package first.</div>
+<label>Full Name</label><input id="coName"><label>WhatsApp</label><input id="coWA"><label>Email</label><input id="coEmail">
+<h3 class="mt">Bank Transfer Details</h3><div class="notice" id="bankBox">Bank: Commercial Bank<br>Account Name: VPN STORE<br>Account No: 8000XXXXXX - Edit in Admin Settings<br>Branch: Colombo</div>
+<label>Amount (Rs.)</label><input id="coAmount" readonly>
+<label>Upload Bank Receipt (JPG / JPEG / PNG / PDF)</label><input id="receiptFile" type="file" accept=".jpg,.jpeg,.png,.pdf">
+<button class="btn" style="width:100%" onclick="placeOrder()">Place Order - Get Order ID</button><p class="sub mt" id="orderResult"></p></div></div></section>
+
+<!-- ACCOUNT -->
+<section id="view-account" class="view"><div class="section"><h2>My <i>Account</i></h2><div class="card" id="profileBox">Not logged in. <button class="btn btn-sm" onclick="show('login')">Login</button></div>
+<div class="grid mt"><div class="card"><h3>My Orders</h3><div id="myOrders">No orders yet.</div></div><div class="card"><h3>Approved VPN Downloads</h3><div id="myDownloads">No approved downloads yet. Admin must approve payment first.</div><p class="sub">Never auto-approved. Only after admin verification.</p></div><div class="card"><h3>Free Trial Status</h3><div id="myTrial">No trial claimed.</div><button class="btn btn-sm mt" onclick="show('free')">Claim Free Trial</button></div></div>
+<div class="flex mt"><button class="btn btn-ghost" onclick="openWA('support')">WhatsApp Support</button><button class="btn btn-ghost" onclick="show('admin')">Admin Dashboard</button><button class="btn btn-ghost" onclick="logout()">Logout</button></div></div></section>
+
+<!-- ADMIN -->
+<section id="view-admin" class="view"><div class="section"><h2>Admin <i>Dashboard</i></h2><p class="sub">Only authorized admins. In production, protect with Supabase RLS + Edge Functions. Never trust frontend JS for approval.</p>
+<div class="kpi"><div class="card"><b id="kpiCustomers">0</b>Total Customers</div><div class="card"><b id="kpiOrders">0</b>Total Orders</div><div class="card"><b id="kpiPending">0</b>Pending Payments</div><div class="card"><b id="kpiApproved">0</b>Approved</div><div class="card"><b id="kpiRejected">0</b>Rejected</div><div class="card"><b id="kpiSales">Rs.0</b>Total Sales</div></div>
+<div class="card mt"><h3>Order Management</h3><input id="adminSearch" placeholder="Search Order ID / Name / WhatsApp" oninput="renderAdmin()"><div class="table-wrap mt"><table><thead><tr><th>Order ID</th><th>Customer</th><th>Package</th><th>Amount</th><th>Status</th><th>Receipt</th><th>Action</th></tr></thead><tbody id="adminOrders"></tbody></table></div></div>
+<div class="grid mt"><div class="card"><h3>Package Management</h3><p class="sub">Edit price / validity. Changes reflect on homepage instantly.</p><label>Select Package</label><select id="pkgSelect"></select><label>New Price Rs.</label><input id="pkgPrice" type="number"><label>Validity</label><input id="pkgValidity" value="30 Days"><button class="btn btn-sm" onclick="updatePackage()">Update Package</button></div>
+<div class="card"><h3>VPN File Management</h3><p class="
